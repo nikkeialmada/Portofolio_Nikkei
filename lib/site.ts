@@ -19,6 +19,22 @@ export interface ExperienceItem {
 const EMAIL = "kamu@example.com";
 const EMAIL_SUBJECT = "Halo — dari portofolio kamu";
 
+/**
+ * Selalu kembalikan URL absolut yang valid (tanpa trailing slash).
+ * Menoleransi NEXT_PUBLIC_SITE_URL yang kosong, ada spasi, atau tanpa "https://".
+ */
+function resolveSiteUrl(): string {
+  const fallback = "http://localhost:3000";
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!raw) return fallback;
+  const withScheme = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  try {
+    return new URL(withScheme).origin;
+  } catch {
+    return fallback;
+  }
+}
+
 export const siteConfig = {
   name: "Nama Kamu",
   role: "Mahasiswa Teknik Informatika, ITB",
@@ -26,7 +42,7 @@ export const siteConfig = {
   email: EMAIL,
 
   /** Dipakai untuk metadata default & sitemap. Set NEXT_PUBLIC_SITE_URL di produksi. */
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url: resolveSiteUrl(),
 
   description:
     "Portofolio studi kasus — mahasiswa dan pengembang web yang menuliskan proyek sebagai masalah, solusi teknis, dan hasil.",
