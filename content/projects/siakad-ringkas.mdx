@@ -1,0 +1,59 @@
+---
+title: "SIAKAD Ringkas"
+category: "Information System"
+date: "2025-06-12"
+group: "selected"
+shortDescription: "Dasbor akademik alternatif yang merangkum jadwal, nilai, dan pengumuman dalam satu layar dan tetap terbuka tanpa koneksi."
+contributionNote: "Peran: desain produk, front-end, dan integrasi API. Dikerjakan berdua."
+coverImageUrl: ""
+isPublished: true
+tech:
+  - "Next.js"
+  - "TypeScript"
+  - "Tailwind CSS"
+  - "IndexedDB"
+links:
+  - type: "repo"
+    label: "Repositori"
+    url: "https://github.com/username/siakad-ringkas"
+  - type: "live"
+    label: "Demo langsung"
+    url: "https://siakad-ringkas.example.com"
+caseStudy:
+  summary: >
+    Portal akademik kampus lambat dan berlapis. Aku membuat versi ringkas yang
+    memuat semua data penting sekali lalu menyimpannya di perangkat, sehingga
+    mahasiswa bisa mengeceknya dalam hitungan milidetik — bahkan saat offline.
+  backgroundObjectives: |
+    Portal akademik kampus memuat lambat, penuh menu bertingkat, dan sering
+    gagal saat jaringan padat menjelang pengisian rencana studi. Padahal
+    mahasiswa umumnya hanya butuh tiga hal: jadwal hari ini, nilai terbaru,
+    dan pengumuman.
+
+    Sasaran proyek:
+
+    - Menyatukan jadwal, nilai, dan pengumuman dalam satu tampilan.
+    - Tetap berfungsi tanpa koneksi setelah kunjungan pertama.
+    - Waktu muat awal di bawah satu detik pada jaringan kampus.
+  keyFeaturesCoreLogic: |
+    ### Sinkron sekali, pakai berulang
+
+    Saat login, aplikasi menarik seluruh data semester berjalan dalam satu
+    permintaan lalu menyimpannya di **IndexedDB**. Kunjungan berikutnya membaca
+    dari penyimpanan lokal lebih dulu, baru menyegarkan di latar belakang
+    (pola *stale-while-revalidate*).
+
+    ### Satu sumber data untuk semua kartu
+
+    Jadwal, indikator kehadiran, dan ringkasan IP dihitung dari struktur data
+    yang sama, sehingga tidak ada permintaan tambahan per komponen.
+
+    ### Mode offline yang jujur
+
+    Setiap kartu menampilkan waktu sinkron terakhir, jadi pengguna tahu persis
+    seberapa baru data yang sedang dilihat.
+---
+
+Versi pertama hanya menempelkan data jadwal dalam satu tabel. Setelah dicoba
+belasan teman seangkatan, cakupannya melebar jadi dasbor penuh dengan nilai
+dan pengumuman.

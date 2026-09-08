@@ -1,0 +1,50 @@
+---
+title: "Kirimin"
+category: "SaaS"
+date: "2025-03-02"
+group: "selected"
+shortDescription: "Pemendek tautan dengan analitik klik real-time dan halaman statistik publik per tautan."
+contributionNote: "Proyek pribadi, dikerjakan sendiri."
+coverImageUrl: ""
+isPublished: true
+tech:
+  - "Go"
+  - "PostgreSQL"
+  - "Redis"
+  - "HTMX"
+links:
+  - type: "repo"
+    label: "Repositori"
+    url: "https://github.com/username/kirimin"
+caseStudy:
+  summary: >
+    Aku butuh pemendek tautan yang statistiknya bisa dibagikan terbuka, bukan
+    disembunyikan di balik login. Kirimin mencatat setiap klik dan
+    menampilkannya di halaman publik yang bisa dilihat siapa saja.
+  backgroundObjectives: |
+    Layanan pemendek populer mengunci data klik di balik akun berbayar.
+    Untuk berbagi performa tautan ke tim atau publik, aku ingin halaman
+    statistik yang terbuka dan apa adanya.
+
+    Sasaran:
+
+    - Pengalihan (redirect) di bawah 20 milidetik pada persentil ke-95.
+    - Halaman statistik publik opsional per tautan.
+    - Bisa dijalankan di satu peti (container) kecil.
+  keyFeaturesCoreLogic: |
+    ### Jalur redirect yang ringan
+
+    Slug dicari di **Redis** lebih dulu; hanya meleset ke **PostgreSQL** saat
+    cache dingin. Pencatatan klik dikirim ke antrean dan ditulis borongan tiap
+    beberapa detik agar tidak memperlambat redirect.
+
+    ### Agregasi yang sudah dihitung di muka
+
+    Total per hari, per negara, dan per perujuk (*referrer*) di-*rollup* lewat
+    tugas terjadwal, sehingga halaman statistik hanya membaca baris ringkasan.
+
+    ### UI tanpa framework berat
+
+    Dasbor dirender di server dan diperbarui sebagian dengan **HTMX** — cukup
+    untuk kebutuhan interaktif tanpa membangun SPA.
+---
