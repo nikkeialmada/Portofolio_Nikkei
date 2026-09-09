@@ -54,7 +54,7 @@ export function Hero() {
             <Avatar
               src={siteConfig.heroPhoto}
               name={siteConfig.shortName}
-              className="h-64 w-64 overflow-hidden rounded-[2rem] border border-line sm:h-80 sm:w-80"
+              className="h-80 w-64 overflow-hidden rounded-[2rem] border border-line object-top sm:h-96 sm:w-72"
             />
           </div>
         </div>

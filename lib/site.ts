@@ -152,7 +152,7 @@ export const siteConfig = {
       school: "SMAN 4 Sukabumi",
       detail: "Natural Science",
       period: "Jul 2017 — Jul 2020",
-      logo: "/images/logos/sman4-sukabumi.png",
+      logo: "/images/logos/sman4-sukabumi.jpeg",
       notes: [
         "Top of a 230-student cohort in mathematics and natural science.",
         "4th place, Physics Olympiad (OSN), Sukabumi.",
