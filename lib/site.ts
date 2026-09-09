@@ -1,6 +1,6 @@
 /* =============================================================
-   Konfigurasi situs — SATU tempat untuk semua teks statis.
-   Ubah file ini untuk mengganti identitas, intro, kontak, dll.
+   Site configuration — the single place for all static copy.
+   Edit this file to change identity, intro, contact, etc.
    ============================================================= */
 
 export interface SocialLink {
@@ -16,12 +16,26 @@ export interface ExperienceItem {
   description: string;
 }
 
-const EMAIL = "kamu@example.com";
-const EMAIL_SUBJECT = "Halo — dari portofolio kamu";
+export interface EducationItem {
+  school: string;
+  detail: string;
+  period: string;
+  notes?: string[];
+}
+
+export interface CredentialItem {
+  title: string;
+  date: string;
+}
+
+const EMAIL = "nikkeialmada@gmail.com";
+const PHONE_DISPLAY = "+62 813-9936-391";
+const PHONE_TEL = "+628139936391";
+const EMAIL_SUBJECT = "Hello — from your portfolio";
 
 /**
- * Selalu kembalikan URL absolut yang valid (tanpa trailing slash).
- * Menoleransi NEXT_PUBLIC_SITE_URL yang kosong, ada spasi, atau tanpa "https://".
+ * Always return a valid absolute URL (no trailing slash).
+ * Tolerates a NEXT_PUBLIC_SITE_URL that is empty, has spaces, or lacks "https://".
  */
 function resolveSiteUrl(): string {
   const fallback = "http://localhost:3000";
@@ -36,73 +50,132 @@ function resolveSiteUrl(): string {
 }
 
 export const siteConfig = {
-  name: "Nama Kamu",
-  role: "Mahasiswa Teknik Informatika, ITB",
-  location: "Bandung, Indonesia",
+  name: "Muhammad Gymnastiar Nikkei Almada",
+  shortName: "Nikkei Almada",
+  role: "Mining Engineer · Mine Planning & Geotechnics",
+  location: "Bandung, West Java, Indonesia",
   email: EMAIL,
+  phoneDisplay: PHONE_DISPLAY,
+  phoneTel: PHONE_TEL,
 
-  /** Dipakai untuk metadata default & sitemap. Set NEXT_PUBLIC_SITE_URL di produksi. */
+  /** Used for default metadata & sitemap. Set NEXT_PUBLIC_SITE_URL in production. */
   url: resolveSiteUrl(),
 
   description:
-    "Portofolio studi kasus — mahasiswa dan pengembang web yang menuliskan proyek sebagai masalah, solusi teknis, dan hasil.",
+    "Mining engineer from Institut Teknologi Bandung specialising in mine planning and geotechnics, who builds web and mobile tools for mining data analysis and operational decisions.",
 
-  /** Status ketersediaan kerja untuk badge di hero (set null untuk menyembunyikan). */
-  availability: "Terbuka untuk magang & kolaborasi" as string | null,
+  /** Availability badge on the home hero (set to null to hide). */
+  availability: "Open to mining-technology consulting & freelance" as string | null,
 
-  /** Tautan "mailto:" dengan subject terisi (PRD F3). */
+  /** "mailto:" link with a prefilled subject. */
   contactHref: `mailto:${EMAIL}?subject=${encodeURIComponent(EMAIL_SUBJECT)}`,
-  contactLabel: "Ajak kerja sama",
+  contactLabel: "Get in touch",
 
-  /** Paragraf intro di halaman Beranda. */
+  /** Intro paragraphs on the Home page. */
   intro: [
-    "Halo, aku Nama Kamu — mahasiswa Teknik Informatika di Institut Teknologi Bandung. Aku senang mengubah masalah nyata jadi antarmuka yang rapi dan sistem yang bekerja diam-diam di belakangnya.",
-    "Halaman ini bukan galeri screenshot. Tiap proyek kuceritakan sebagai konteks, keputusan teknis, dan hasilnya.",
+    "I'm Nikkei — a mining engineer from Institut Teknologi Bandung with hands-on experience in mine planning, geotechnical analysis, and mining operations across nickel, gold, coal, and industrial-minerals projects.",
+    "I also build software: production-monitoring dashboards, an Android app for exploration and mine planning, and geospatial pipelines that turn field data into reserve and grade–tonnage reports. This site collects that work as engineering case studies.",
   ],
 
-  /** Paragraf di halaman Tentang. */
+  /** Paragraphs on the About page. */
   about: [
-    "Aku Nama Kamu, mahasiswa Teknik Informatika ITB yang berbasis di Bandung. Minatku ada di pengembangan web modern, performa front-end, dan sedikit machine learning terapan.",
-    "Aku belajar paling cepat lewat membangun sesuatu yang benar-benar dipakai orang — dari sistem pendaftaran acara himpunan sampai alat bantu belajar untuk teman seangkatan.",
-    "Di luar kode, aku suka fotografi jalanan dan menyeduh kopi manual. Sedang terbuka untuk peluang magang dan proyek freelance.",
+    "I'm Muhammad Gymnastiar Nikkei Almada, a mining engineer based in Bandung. My core work is pit, road, and dump design, mine scheduling, pit optimisation, and geotechnical slope assessment using Surpac, Deswik, Datamine, and the wider macro mine-planning suite.",
+    "Alongside that, I develop web and mobile applications that support mining data analysis and operational decision-making — from a real-time equipment-KPI dashboard to GEORIVAL, an Android app that digitises exploration and mine planning for a nickel laterite operation.",
+    "I'm currently a Foreman Mining Engineer at PT Adhi Kartiko Pratama, a freelance Deswik.CAD trainer with Aksara Karir, and an independent developer on mining-technology projects.",
   ],
 
   socials: [
-    { label: "GitHub", url: "https://github.com/username", external: true },
-    { label: "LinkedIn", url: "https://linkedin.com/in/username", external: true },
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/gymnastiarn/", external: true },
+    { label: "GitHub", url: "https://github.com/nikkeialmada", external: true },
     { label: "Email", url: `mailto:${EMAIL}` },
     { label: "CV (PDF)", url: "/cv.pdf", external: true },
   ] as SocialLink[],
 
   experience: [
     {
-      role: "Frontend Developer (Magang)",
-      org: "Startup XYZ",
-      period: "2025 — Sekarang",
+      role: "Foreman Mining Engineer",
+      org: "PT Adhi Kartiko Pratama",
+      period: "Mar 2025 — Present",
       description:
-        "Membangun komponen UI reusable dan memangkas waktu muat halaman utama sekitar 40%.",
+        "Block-model validation, long-term pit design, pit optimisation, and scheduling for an acquisition-stage project, supporting management's technical due diligence. Designed pit, road, dump, and construction layouts with Surpac, Deswik, Datamine, AutoCAD, and 12D, and built a Flask/MySQL production-monitoring dashboard.",
     },
     {
-      role: "Staf Divisi Web",
-      org: "Himpunan Mahasiswa",
-      period: "2024 — 2025",
+      role: "Deswik.CAD Trainer (Freelance)",
+      org: "Aksara Karir — Mining & Geology Training",
+      period: "Sep 2026 — Present",
       description:
-        "Merawat situs himpunan dan sistem pendaftaran acara tahunan untuk 800+ peserta.",
+        "Design and deliver a three-day intensive Deswik.CAD program for nickel mine planning: UI fundamentals, block-model workflows, pit and dump design, haul-road design, surface reconciliation, catchment analysis, and section/layout plotting.",
     },
     {
-      role: "Asisten Praktikum",
-      org: "Lab Pemrograman, ITB",
-      period: "2024",
+      role: "Solo Developer — Mining Technology",
+      org: "Independent",
+      period: "Jul 2026 — Present",
       description:
-        "Mendampingi 30 mahasiswa pada praktikum Struktur Data & Algoritma.",
+        "Designed and led development of GEORIVAL, an Android app for exploration and mine-planning digitisation, plus an end-to-end geospatial pipeline for automated grade–tonnage reporting and large-scale point-cloud section profiles.",
+    },
+    {
+      role: "Geotechnical Engineer",
+      org: "PT LAPI ITB — Geotechnical Division",
+      period: "Sep 2024 — May 2025",
+      description:
+        "Single-slope analysis and optimal slope geometry for Life-of-Mine designs in limestone, claystone, laterite, and silica at PT Indocement Tunggal Prakarsa (Tarjun). Delivered the geotechnical section of feasibility study reports: drilling-data interpretation, slope-stability analysis, and mining recommendations.",
     },
   ] as ExperienceItem[],
 
+  education: [
+    {
+      school: "Institut Teknologi Bandung",
+      detail: "B.Eng. Mining Engineering — GPA 3.11 / 4.00",
+      period: "Aug 2020 — Aug 2024",
+      notes: [
+        "Laterite nickel mine feasibility study: optimal pit layouts, mine scheduling, hydrological and economic analysis.",
+        "Underground gold mine feasibility study: sub-level stoping layout, mine schedule, and reclamation section.",
+      ],
+    },
+  ] as EducationItem[],
+
+  certifications: [
+    { title: "100 Days of Code — Master Python by Building 100 Projects", date: "Sep 2026" },
+    { title: "Geotechnical Risk Management — Case Studies in Geotechnical Failure", date: "Aug 2026" },
+    { title: "Coal Mine Planning: MineScape & Spry", date: "Jan 2025" },
+  ] as CredentialItem[],
+
+  honors: [
+    {
+      title:
+        "1st Place — Mine Evacuation Rescue Competition, Mining Games 2022–2023 (ITB)",
+      date: "Feb 2023",
+    },
+  ] as CredentialItem[],
+
+  skills: {
+    "Mine planning & design": [
+      "Surpac",
+      "Deswik",
+      "Datamine",
+      "MineScape",
+      "Whittle",
+      "MineSched",
+      "Spry",
+      "12D",
+      "AutoCAD",
+    ],
+    Geotechnics: ["Slide2", "RS2 (Phase2)", "Dips", "RocPlane", "SWedge", "Kazemaru"],
+    "Geospatial & data": [
+      "ArcGIS",
+      "Surfer",
+      "WMS",
+      "Point-cloud processing",
+      "GeoPDF",
+    ],
+    "Software development": ["Python", "Flask", "MySQL", "Android", "Data visualisation"],
+    Languages: ["Bahasa Indonesia (native)", "English (B2)"],
+  } as Record<string, string[]>,
+
   nav: [
-    { href: "/", label: "Beranda" },
-    { href: "/projects", label: "Proyek" },
-    { href: "/about", label: "Tentang" },
-    { href: "/blog", label: "Blog" },
+    { href: "/", label: "Home" },
+    { href: "/projects", label: "Projects" },
+    { href: "/about", label: "About" },
   ],
 };
 

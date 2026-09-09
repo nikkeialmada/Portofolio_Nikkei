@@ -18,7 +18,7 @@ export function ProjectCard({ project, featured = false }: Props) {
       {featured && (
         <CoverImage
           src={project.coverImageUrl}
-          alt={`Pratinjau ${project.title}`}
+          alt={`${project.title} — cover`}
           className="mb-4 transition-opacity group-hover:opacity-95"
         />
       )}
@@ -58,7 +58,7 @@ export function ProjectCard({ project, featured = false }: Props) {
       )}
 
       <span className="mt-3 inline-flex items-center gap-1 text-xs text-ink-mute transition-colors group-hover:text-ink">
-        Baca studi kasus
+        Read case study
         <span className="transition-transform group-hover:translate-x-0.5">→</span>
       </span>
     </Link>

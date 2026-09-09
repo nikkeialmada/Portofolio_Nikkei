@@ -33,7 +33,7 @@ export function buildMetadata({
       description,
       url,
       siteName: siteConfig.name,
-      locale: "id_ID",
+      locale: "en_US",
       type,
       images,
     },

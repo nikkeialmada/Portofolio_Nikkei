@@ -37,7 +37,7 @@ export default async function BlogPostPage({ params }: Params) {
         href="/blog"
         className="font-mono text-xs text-ink-mute transition-colors hover:text-ink"
       >
-        ← Semua tulisan
+        ← All posts
       </Link>
 
       <h1 className="mt-6 text-2xl font-semibold tracking-tight sm:text-[1.75rem]">

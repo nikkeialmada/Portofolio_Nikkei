@@ -1,0 +1,47 @@
+---
+title: "GEORIVAL — Exploration & Mine Planning App"
+category: "Mobile Application"
+date: "2026-07"
+group: "selected"
+shortDescription: "An Android app that digitises exploration and mine planning for a nickel laterite operation — 2D block-model visualisation, drill-hole management, GeoPDF mapping, and field productivity tools."
+contributionNote: "Solo developer — product design, engineering logic, and build."
+coverImageUrl: ""
+isPublished: true
+tech:
+  - "Android"
+  - "GIS / GeoPDF"
+  - "Block modelling"
+  - "Reserve estimation"
+caseStudy:
+  summary: >
+    Field teams on a nickel laterite site still moved paper maps and spreadsheets
+    between the pit and the office. GEORIVAL puts the block model, drill holes,
+    and reserve figures on an Android device so planning decisions can be made
+    and checked on the ground.
+  backgroundObjectives: |
+    Exploration and short-term planning data lived in disconnected desktop files,
+    so anything checked in the field meant a round trip to the office.
+
+    Objectives:
+
+    - Put 2D block-model visualisation, drill-hole data, and GeoPDF maps in one Android app.
+    - Reproduce the operation's reserve reporting exactly — no "close enough" numbers.
+    - Give field staff simple productivity tools tied to the same data.
+  keyFeaturesCoreLogic: |
+    ### Reserve reporting to mining-engineering standard
+
+    The app implements the operation's own reserve logic — domain-specific
+    **Recovery** and **Dilution**, **cut-off grade** classification, and
+    **Stripping Ratio** — and the output was validated against real operational
+    data before it was trusted.
+
+    ### One data model, many views
+
+    Block model, drill holes, and GeoPDF layers are read from a single structure,
+    so the map, the sections, and the grade–tonnage summary always agree.
+
+    ### Built for the pit, not the desk
+
+    2D block-model rendering and drill-hole browsing are designed to stay usable
+    on a phone screen in the field.
+---

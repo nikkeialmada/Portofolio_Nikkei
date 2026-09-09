@@ -1,7 +1,7 @@
 /* =============================================================
-   Tata letak halaman detail studi kasus (Blueprint §3):
-   CaseStudyHero + Background&Objectives + KeyFeatures&CoreLogic
-   + RelatedProjects.
+   Case-study detail layout (Blueprint §3):
+   CaseStudyHero + Background & Objectives + Key Features & Core Logic
+   + Related Projects.
    ============================================================= */
 import Link from "next/link";
 import type { Project } from "@/types/project";
@@ -27,7 +27,7 @@ export function CaseStudyLayout({ project, related }: Props) {
           href="/projects"
           className="font-mono text-xs text-ink-mute transition-colors hover:text-ink"
         >
-          ← Semua proyek
+          ← All projects
         </Link>
 
         <p className="mt-6 font-mono text-xs uppercase tracking-[0.14em] text-ink-mute">
@@ -61,17 +61,17 @@ export function CaseStudyLayout({ project, related }: Props) {
 
       <CoverImage
         src={project.coverImageUrl}
-        alt={`Pratinjau ${project.title}`}
+        alt={`${project.title} — cover`}
         ratio="aspect-[16/9]"
         priority
         className="mt-8"
       />
 
-      {/* --- Ringkasan bahasa awam (PRD §11) --- */}
+      {/* --- Plain-language summary (PRD §11) --- */}
       {cs?.summary && (
         <section className="mt-12 rounded-lg border border-line bg-surface p-5">
           <p className="mb-2 font-mono text-xs uppercase tracking-[0.14em] text-ink-mute">
-            Ringkas
+            In brief
           </p>
           <p className="leading-relaxed text-ink-dim">{cs.summary}</p>
         </section>
@@ -80,7 +80,7 @@ export function CaseStudyLayout({ project, related }: Props) {
       {/* --- Background & Objectives --- */}
       {cs?.backgroundObjectives && (
         <section className="mt-14">
-          <SectionHeading>Latar &amp; Tujuan</SectionHeading>
+          <SectionHeading>Background &amp; Objectives</SectionHeading>
           <RichText text={cs.backgroundObjectives} />
         </section>
       )}
@@ -88,15 +88,15 @@ export function CaseStudyLayout({ project, related }: Props) {
       {/* --- Key Features & Core Logic --- */}
       {cs?.keyFeaturesCoreLogic && (
         <section className="mt-14">
-          <SectionHeading>Fitur Utama &amp; Logika Inti</SectionHeading>
+          <SectionHeading>Key Features &amp; Core Logic</SectionHeading>
           <RichText text={cs.keyFeaturesCoreLogic} />
         </section>
       )}
 
-      {/* --- Catatan tambahan (body MDX) --- */}
+      {/* --- Extra notes (MDX body) --- */}
       {project.body && (
         <section className="mt-14">
-          <SectionHeading>Catatan</SectionHeading>
+          <SectionHeading>Notes</SectionHeading>
           <RichText text={project.body} />
         </section>
       )}
@@ -104,7 +104,7 @@ export function CaseStudyLayout({ project, related }: Props) {
       {/* --- Related Projects --- */}
       {related.length > 0 && (
         <section className="mt-16 border-t border-line pt-10">
-          <SectionHeading>Proyek Terkait</SectionHeading>
+          <SectionHeading>Related Projects</SectionHeading>
           <div className="flex flex-col">
             {related.map((p) => (
               <ProjectCard key={p.slug} project={p} />

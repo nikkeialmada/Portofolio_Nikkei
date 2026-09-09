@@ -5,8 +5,8 @@ import { formatDate } from "@/lib/format";
 import { buildMetadata } from "@/lib/generateMetadata";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Blog",
-  description: "Catatan singkat soal proses, keputusan teknis, dan hal yang dipelajari.",
+  title: "Writing",
+  description: "Short notes on process, technical decisions, and lessons learned.",
   path: "/blog",
 });
 
@@ -17,19 +17,19 @@ export default function BlogPage() {
     <div>
       <section>
         <h1 className="text-2xl font-semibold tracking-tight sm:text-[1.75rem]">
-          Blog
+          Writing
         </h1>
         <p className="mt-3 max-w-[34rem] text-ink-dim">
-          Tulisan pendek tentang proses di balik proyek dan pelajaran teknis yang
-          sayang kalau dilupakan.
+          Short notes on the work behind the projects and technical lessons worth
+          keeping.
         </p>
       </section>
 
       <div className="mt-10 flex flex-col">
         {posts.length === 0 && (
           <p className="text-sm text-ink-mute">
-            Belum ada tulisan. Tambahkan file <code className="font-mono text-xs">.mdx</code>{" "}
-            di <code className="font-mono text-xs">content/blog/</code>.
+            No posts yet. Add an <code className="font-mono text-xs">.mdx</code>{" "}
+            file to <code className="font-mono text-xs">content/blog/</code>.
           </p>
         )}
 

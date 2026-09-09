@@ -33,7 +33,7 @@ export default function HomePage() {
 
       {/* --- Selected projects --- */}
       <section className="mt-14">
-        <SectionHeading>Proyek Pilihan</SectionHeading>
+        <SectionHeading>Selected Projects</SectionHeading>
         {selected.length > 0 ? (
           <div className="flex flex-col gap-2">
             {selected.slice(0, 3).map((p) => (
@@ -42,7 +42,7 @@ export default function HomePage() {
           </div>
         ) : (
           <p className="text-sm text-ink-mute">
-            Belum ada proyek pilihan. Tambahkan file di{" "}
+            No selected projects yet. Add a file to{" "}
             <code className="font-mono text-xs">content/projects/</code>.
           </p>
         )}
@@ -50,14 +50,14 @@ export default function HomePage() {
           href="/projects"
           className="mt-6 inline-block text-sm text-ink-dim transition-colors hover:text-ink"
         >
-          Lihat semua proyek →
+          View all projects →
         </Link>
       </section>
 
       {/* --- Experience --- */}
       {siteConfig.experience.length > 0 && (
         <section className="mt-14">
-          <SectionHeading>Pengalaman</SectionHeading>
+          <SectionHeading>Experience</SectionHeading>
           <div className="flex flex-col">
             {siteConfig.experience.map((e, i) => (
               <div

@@ -9,7 +9,7 @@ export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  // Tutup menu mobile setiap kali route berubah.
+  // Close the mobile menu whenever the route changes.
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
@@ -24,10 +24,10 @@ export function Navbar() {
           href="/"
           className="font-semibold tracking-tight transition-opacity hover:opacity-70"
         >
-          {siteConfig.name}
+          {siteConfig.shortName}
         </Link>
 
-        {/* Nav desktop */}
+        {/* Desktop nav */}
         <nav className="hidden items-center gap-6 text-sm sm:flex">
           {siteConfig.nav.map((item) => (
             <Link
@@ -51,13 +51,13 @@ export function Navbar() {
           </a>
         </nav>
 
-        {/* Tombol hamburger (mobile) */}
+        {/* Hamburger (mobile) */}
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="mobile-nav"
-          aria-label="Buka menu"
+          aria-label="Toggle menu"
           className="flex h-9 w-9 items-center justify-center rounded-md border border-line text-ink-dim sm:hidden"
         >
           <span className="relative block h-2.5 w-4">
@@ -75,7 +75,7 @@ export function Navbar() {
         </button>
       </div>
 
-      {/* Nav mobile */}
+      {/* Mobile nav */}
       {open && (
         <nav
           id="mobile-nav"

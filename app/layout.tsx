@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   authors: [{ name: siteConfig.name }],
   openGraph: {
     type: "website",
-    locale: "id_ID",
+    locale: "en_US",
     url: siteConfig.url,
     siteName: siteConfig.name,
     title: `${siteConfig.name} — ${siteConfig.role}`,
@@ -47,7 +47,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className={`${sans.variable} ${mono.variable}`}>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body className="min-h-dvh bg-bg font-sans text-ink">
         <Navbar />
         <main className="wrap py-12">{children}</main>

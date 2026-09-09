@@ -5,7 +5,7 @@ export function Footer() {
     <footer className="mt-16 border-t border-line">
       <div className="wrap py-10">
         <p className="text-sm text-ink-dim">
-          Punya proyek atau lowongan?{" "}
+          Have a project or a role in mind?{" "}
           <a
             href={siteConfig.contactHref}
             className="border-b border-line-strong pb-px text-ink transition-colors hover:border-ink"
@@ -31,7 +31,7 @@ export function Footer() {
         </ul>
 
         <p className="mt-6 text-xs text-ink-mute">
-          © {new Date().getFullYear()} {siteConfig.name}. Dibangun dengan Next.js &amp; Tailwind CSS.
+          © {new Date().getFullYear()} {siteConfig.name}. Built with Next.js &amp; Tailwind CSS.
         </p>
       </div>
     </footer>

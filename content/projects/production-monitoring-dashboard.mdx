@@ -1,0 +1,44 @@
+---
+title: "Mining Production Monitoring Dashboard"
+category: "Mining Technology"
+date: "2025-06"
+group: "selected"
+shortDescription: "A web dashboard for a mining operation: real-time equipment KPI tracking (PA/MA/UA/EU), ore and waste production analytics, and interactive strip-ratio visualisation."
+contributionNote: "Built at PT Adhi Kartiko Pratama."
+coverImageUrl: ""
+isPublished: true
+tech:
+  - "Flask"
+  - "MySQL"
+  - "Data visualisation"
+caseStudy:
+  summary: >
+    Daily production and equipment performance were reconciled by hand from
+    several spreadsheets. This dashboard reads the same records and shows
+    equipment KPIs, ore and waste volumes, and strip ratio in one place, updated
+    as data comes in.
+  backgroundObjectives: |
+    Equipment availability and production figures were compiled manually, so the
+    picture was always a day behind and hard to interrogate.
+
+    Objectives:
+
+    - Track the standard equipment KPIs — Physical Availability, Mechanical Availability, Use of Availability, Effective Utilisation — as they update.
+    - Show ore and waste production and the resulting strip ratio interactively.
+    - Keep the stack small enough to run on a single modest server.
+  keyFeaturesCoreLogic: |
+    ### KPI definitions fixed in one place
+
+    PA/MA/UA/EU are computed from raw equipment-hour records with the formulas
+    defined once, so every chart and table uses the same numbers.
+
+    ### Strip ratio you can slice
+
+    Ore and waste tonnes roll up by period and area; the strip-ratio view is
+    interactive, so planners can check trends without exporting anything.
+
+    ### Deliberately lightweight
+
+    Flask and MySQL, server-rendered — enough for the interactivity needed
+    without standing up a separate front-end app.
+---
