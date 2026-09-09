@@ -2,12 +2,15 @@ import Link from "next/link";
 import type { Project } from "@/types/project";
 import { formatYear } from "@/lib/format";
 import { CoverImage } from "@/components/shared/CoverImage";
+import { AutoVideo } from "@/components/shared/AutoVideo";
 
 interface Props {
   project: Project;
-  /** Tampilkan gambar cover di atas (untuk section "Selected Projects"). */
+  /** Show media on top (for the "Selected Projects" section). */
   featured?: boolean;
 }
+
+const LOCAL_VIDEO_RE = /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i;
 
 export function ProjectCard({ project, featured = false }: Props) {
   return (
@@ -15,13 +18,22 @@ export function ProjectCard({ project, featured = false }: Props) {
       href={`/projects/${project.slug}`}
       className="group block border-b border-line py-6 transition-colors first:pt-0 last:border-0 hover:border-line-strong"
     >
-      {featured && (
-        <CoverImage
-          src={project.coverImageUrl}
-          alt={`${project.title} — cover`}
-          className="mb-4 transition-opacity group-hover:opacity-95"
-        />
-      )}
+      {featured &&
+        (project.video && LOCAL_VIDEO_RE.test(project.video) ? (
+          <div className="mb-4 aspect-[16/10] overflow-hidden rounded-lg border border-line bg-black">
+            <AutoVideo
+              src={project.video}
+              poster={project.videoPoster}
+              className="pointer-events-none h-full w-full object-cover"
+            />
+          </div>
+        ) : (
+          <CoverImage
+            src={project.coverImageUrl}
+            alt={`${project.title} — cover`}
+            className="mb-4 transition-opacity group-hover:opacity-95"
+          />
+        ))}
 
       <div className="flex items-baseline justify-between gap-4">
         <h3 className="text-[1.02rem] font-semibold text-ink-dim transition-colors group-hover:text-ink">

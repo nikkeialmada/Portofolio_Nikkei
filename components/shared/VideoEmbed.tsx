@@ -1,3 +1,5 @@
+import { AutoVideo } from "./AutoVideo";
+
 interface Props {
   /** Local file (/videos/x.mp4, .webm) or an embed URL (YouTube / Vimeo). */
   src: string;
@@ -47,16 +49,7 @@ export function VideoEmbed({
         className={`${ratio} overflow-hidden rounded-lg border border-line bg-black`}
       >
         {isFile ? (
-          <video
-            controls
-            preload="metadata"
-            playsInline
-            poster={poster}
-            className="h-full w-full"
-          >
-            <source src={src} />
-            Your browser does not support the video tag.
-          </video>
+          <AutoVideo src={src} poster={poster} controls className="h-full w-full" />
         ) : (
           <iframe
             src={toEmbedUrl(src)}
