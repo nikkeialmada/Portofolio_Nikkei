@@ -77,7 +77,7 @@ export function CardCarousel({ images }: { images: GalleryImage[] }) {
               alt={img.alt}
               fill
               sizes="(max-width: 768px) 100vw, 380px"
-              className="object-cover"
+              className="object-contain p-2"
               priority={i === 0}
             />
           </div>
