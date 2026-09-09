@@ -7,9 +7,10 @@ import type { GalleryImage } from "@/types/project";
 const AUTOPLAY_MS = 3800;
 
 /**
- * Featured-card media: a sliding strip of screenshots, ~3 in view at once.
- * Auto-advances, pauses on hover / hidden tab / reduced-motion, and can be
- * driven manually with the arrows, dots, or a swipe.
+ * Featured-card media: a sliding strip of screenshots, each in its own
+ * rounded tile, ~3 in view at once. Auto-advances, pauses on hover / hidden
+ * tab / reduced-motion, and can be driven manually with the arrows, dots,
+ * or a swipe.
  */
 export function ProjectCardSlider({ images }: { images: GalleryImage[] }) {
   const [perView, setPerView] = useState(3);
@@ -18,7 +19,6 @@ export function ProjectCardSlider({ images }: { images: GalleryImage[] }) {
   const pausedRef = useRef(false);
   const touchX = useRef<number | null>(null);
 
-  // Slides in view, by width.
   useEffect(() => {
     const md = window.matchMedia("(min-width: 768px)");
     const sm = window.matchMedia("(min-width: 460px)");
@@ -55,7 +55,6 @@ export function ProjectCardSlider({ images }: { images: GalleryImage[] }) {
     [maxIndex],
   );
 
-  // Auto-advance.
   useEffect(() => {
     if (reduced || maxIndex === 0) return;
     const id = window.setInterval(() => {
@@ -77,13 +76,10 @@ export function ProjectCardSlider({ images }: { images: GalleryImage[] }) {
 
   const slideBasis = 100 / perView;
   const canSlide = maxIndex > 0;
-  // Frame hugs the phone screenshots (~0.52 aspect each) so there are no
-  // wide letterbox bars — its shape follows how many are in view.
-  const frameAspect = perView * 0.52;
 
   return (
     <div
-      className="group/slider relative select-none"
+      className="group/slider select-none"
       onMouseEnter={() => {
         pausedRef.current = true;
       }}
@@ -92,13 +88,12 @@ export function ProjectCardSlider({ images }: { images: GalleryImage[] }) {
       }}
     >
       <div
-        className="mx-auto overflow-hidden rounded-lg border border-line bg-surface"
-        style={{ aspectRatio: String(frameAspect) }}
+        className="relative overflow-hidden"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
         <div
-          className="flex h-full"
+          className="flex"
           style={{
             transform: `translateX(-${index * slideBasis}%)`,
             transition: reduced
@@ -109,56 +104,62 @@ export function ProjectCardSlider({ images }: { images: GalleryImage[] }) {
           {images.map((img, i) => (
             <div
               key={img.src}
-              className="relative h-full shrink-0"
+              className="shrink-0 px-1.5"
               style={{ flex: `0 0 ${slideBasis}%` }}
             >
-              <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                sizes="(max-width: 460px) 88vw, (max-width: 768px) 44vw, 210px"
-                className="object-contain"
-                priority={i < 3}
-              />
+              <div className="relative aspect-[9/19] overflow-hidden rounded-2xl border border-line bg-black">
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes="(max-width: 460px) 82vw, (max-width: 768px) 42vw, 200px"
+                  className="object-cover"
+                  priority={i < 3}
+                />
+              </div>
             </div>
           ))}
         </div>
+
+        {canSlide && (
+          <>
+            <button
+              type="button"
+              aria-label="Previous"
+              onClick={() => go(index - 1)}
+              className="absolute left-3 top-1/2 hidden -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/55 px-2 py-1 text-white/80 backdrop-blur-sm hover:text-white group-hover/slider:flex"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              aria-label="Next"
+              onClick={() => go(index + 1)}
+              className="absolute right-3 top-1/2 hidden -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/55 px-2 py-1 text-white/80 backdrop-blur-sm hover:text-white group-hover/slider:flex"
+            >
+              ›
+            </button>
+          </>
+        )}
       </div>
 
       {canSlide && (
-        <>
-          <button
-            type="button"
-            aria-label="Previous"
-            onClick={() => go(index - 1)}
-            className="absolute left-2 top-1/2 hidden -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 px-2 py-1 text-white/80 backdrop-blur-sm hover:text-white group-hover/slider:flex"
-          >
-            ‹
-          </button>
-          <button
-            type="button"
-            aria-label="Next"
-            onClick={() => go(index + 1)}
-            className="absolute right-2 top-1/2 hidden -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 px-2 py-1 text-white/80 backdrop-blur-sm hover:text-white group-hover/slider:flex"
-          >
-            ›
-          </button>
-
-          <div className="absolute inset-x-0 bottom-2 flex justify-center gap-1.5">
-            {Array.from({ length: maxIndex + 1 }).map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                aria-label={`Go to position ${i + 1}`}
-                aria-current={i === index}
-                onClick={() => go(i)}
-                className={`h-1.5 rounded-full transition-all ${
-                  i === index ? "w-4 bg-white" : "w-1.5 bg-white/40 hover:bg-white/70"
-                }`}
-              />
-            ))}
-          </div>
-        </>
+        <div className="mt-2.5 flex justify-center gap-1.5">
+          {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              aria-label={`Go to position ${i + 1}`}
+              aria-current={i === index}
+              onClick={() => go(i)}
+              className={`h-1.5 rounded-full transition-all ${
+                i === index
+                  ? "w-4 bg-ink"
+                  : "w-1.5 bg-line-strong hover:bg-ink-mute"
+              }`}
+            />
+          ))}
+        </div>
       )}
     </div>
   );
