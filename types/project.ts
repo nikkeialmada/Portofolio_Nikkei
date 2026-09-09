@@ -21,6 +21,13 @@ export interface ExternalLink {
   url: string;
 }
 
+/** Satu gambar di galeri studi kasus (mis. screenshot aplikasi). */
+export interface GalleryImage {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
 /** Isi studi kasus (Blueprint ERD: CASE_STUDY). */
 export interface CaseStudy {
   /** Ringkasan bahasa awam untuk recruiter non-teknis (PRD §11 mitigasi risiko). */
@@ -41,6 +48,10 @@ export interface ProjectFrontmatter {
   shortDescription: string;
   contributionNote?: string;
   coverImageUrl?: string;
+  /** How the cover image fills its frame. Default "cover". Use "contain" for app screenshots. */
+  coverFit?: "cover" | "contain";
+  /** Screenshot / image gallery shown in the case study. */
+  gallery?: GalleryImage[];
   /** Video URL: a local file (/videos/x.mp4, .webm) or an embed URL (YouTube/Vimeo). */
   video?: string;
   /** Poster image shown before a local video plays. */

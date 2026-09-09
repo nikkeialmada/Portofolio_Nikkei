@@ -10,6 +10,7 @@ import { CoverImage } from "@/components/shared/CoverImage";
 import { VideoEmbed } from "@/components/shared/VideoEmbed";
 import { RichText } from "@/components/shared/RichText";
 import { SectionHeading } from "@/components/shared/SectionHeading";
+import { ScreenshotGallery } from "./ScreenshotGallery";
 import { ProjectCard } from "./ProjectCard";
 
 interface Props {
@@ -72,6 +73,7 @@ export function CaseStudyLayout({ project, related }: Props) {
           src={project.coverImageUrl}
           alt={`${project.title} — cover`}
           ratio="aspect-[16/9]"
+          fit={project.coverFit}
           priority
           className="mt-8"
         />
@@ -100,6 +102,14 @@ export function CaseStudyLayout({ project, related }: Props) {
         <section className="mt-14">
           <SectionHeading>Key Features &amp; Core Logic</SectionHeading>
           <RichText text={cs.keyFeaturesCoreLogic} />
+        </section>
+      )}
+
+      {/* --- Screens --- */}
+      {project.gallery && project.gallery.length > 0 && (
+        <section className="mt-14">
+          <SectionHeading count={project.gallery.length}>Screens</SectionHeading>
+          <ScreenshotGallery images={project.gallery} />
         </section>
       )}
 

@@ -31,6 +31,7 @@ export function ProjectCard({ project, featured = false }: Props) {
           <CoverImage
             src={project.coverImageUrl}
             alt={`${project.title} — cover`}
+            fit={project.coverFit}
             className="mb-4 transition-opacity group-hover:opacity-95"
           />
         ))}

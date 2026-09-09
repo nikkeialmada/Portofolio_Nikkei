@@ -10,6 +10,7 @@ import type {
   ProjectGroup,
   GroupedProjects,
   ExternalLink,
+  GalleryImage,
   CaseStudy,
 } from "@/types/project";
 
@@ -31,6 +32,8 @@ function toProject(fileName: string): Project {
     shortDescription: String(data.shortDescription ?? ""),
     contributionNote: data.contributionNote ? String(data.contributionNote) : undefined,
     coverImageUrl: data.coverImageUrl ? String(data.coverImageUrl) : undefined,
+    coverFit: data.coverFit === "contain" ? "contain" : undefined,
+    gallery: Array.isArray(data.gallery) ? (data.gallery as GalleryImage[]) : [],
     video: data.video ? String(data.video) : undefined,
     videoPoster: data.videoPoster ? String(data.videoPoster) : undefined,
     videoCaption: data.videoCaption ? String(data.videoCaption) : undefined,
