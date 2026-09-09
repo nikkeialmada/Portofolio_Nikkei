@@ -3,15 +3,20 @@ import Image from "next/image";
 import type { Project } from "@/types/project";
 import { formatYear } from "@/lib/format";
 import { AutoVideo } from "@/components/shared/AutoVideo";
+import { CardCarousel } from "./CardCarousel";
 
 export function PortfolioCard({ project }: { project: Project }) {
+  const hasGallery = (project.gallery?.length ?? 0) > 1;
+
   return (
     <Link
       href={`/projects/${project.slug}`}
       className="group flex flex-col overflow-hidden rounded-xl border border-line bg-bg shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-card-hover"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-surface">
-        {project.coverImageUrl ? (
+        {hasGallery ? (
+          <CardCarousel images={project.gallery!} />
+        ) : project.coverImageUrl ? (
           <Image
             src={project.coverImageUrl}
             alt={project.title}
@@ -25,6 +30,7 @@ export function PortfolioCard({ project }: { project: Project }) {
           <AutoVideo
             src={project.video}
             poster={project.videoPoster}
+            pauseOffscreen={false}
             className="h-full w-full object-cover"
           />
         ) : (
