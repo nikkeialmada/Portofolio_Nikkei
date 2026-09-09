@@ -30,6 +30,7 @@ function toProject(fileName: string): Project {
     date: String(data.date ?? "1970-01"),
     group: (data.group ?? "more") as ProjectGroup,
     shortDescription: String(data.shortDescription ?? ""),
+    order: typeof data.order === "number" ? data.order : undefined,
     contributionNote: data.contributionNote ? String(data.contributionNote) : undefined,
     coverImageUrl: data.coverImageUrl ? String(data.coverImageUrl) : undefined,
     coverFit: data.coverFit === "contain" ? "contain" : undefined,
@@ -55,10 +56,19 @@ export function getAllProjects(): Project[] {
     .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 }
 
+/** Items with an explicit `order` come first (ascending); the rest keep date order. */
+function applyOrder(list: Project[]): Project[] {
+  const ordered = list
+    .filter((p) => typeof p.order === "number")
+    .sort((a, b) => (a.order as number) - (b.order as number));
+  const rest = list.filter((p) => typeof p.order !== "number");
+  return [...ordered, ...rest];
+}
+
 /** Pengelompokan otomatis berdasarkan field `group` (PRD F1, Blueprint §6). */
 export function getGroupedProjects(): GroupedProjects {
   const all = getAllProjects();
-  const byGroup = (g: ProjectGroup) => all.filter((p) => p.group === g);
+  const byGroup = (g: ProjectGroup) => applyOrder(all.filter((p) => p.group === g));
   return {
     selected: byGroup("selected"),
     more: byGroup("more"),

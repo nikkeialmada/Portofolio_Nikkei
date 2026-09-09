@@ -47,6 +47,8 @@ export interface ProjectFrontmatter {
   group: ProjectGroup;
   shortDescription: string;
   contributionNote?: string;
+  /** Manual position within its group (1 = first). Items without an order follow, newest first. */
+  order?: number;
   coverImageUrl?: string;
   /** How the cover image fills its frame. Default "cover". Use "contain" for app screenshots. */
   coverFit?: "cover" | "contain";

@@ -8,6 +8,8 @@ interface Props {
   poster?: string;
   /** Show native playback controls (detail page); omit for a silent card preview. */
   controls?: boolean;
+  /** Pause while the element is scrolled out of view. Default true. */
+  pauseOffscreen?: boolean;
   className?: string;
 }
 
@@ -15,9 +17,15 @@ interface Props {
  * Muted, looping, auto-playing video.
  * - Forces the `muted` property (React doesn't reflect the attribute), which
  *   browsers require for autoplay.
- * - Plays only while on screen, and not at all under prefers-reduced-motion.
+ * - Never plays under prefers-reduced-motion.
  */
-export function AutoVideo({ src, poster, controls = false, className }: Props) {
+export function AutoVideo({
+  src,
+  poster,
+  controls = false,
+  pauseOffscreen = true,
+  className,
+}: Props) {
   const ref = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -27,9 +35,7 @@ export function AutoVideo({ src, poster, controls = false, className }: Props) {
     v.muted = true;
     v.defaultMuted = true;
 
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    );
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const tryPlay = () => {
       if (prefersReduced.matches) return;
@@ -37,24 +43,20 @@ export function AutoVideo({ src, poster, controls = false, className }: Props) {
       if (p && typeof p.catch === "function") p.catch(() => {});
     };
 
-    // Play/pause as the element scrolls in and out of view.
     let io: IntersectionObserver | null = null;
     if ("IntersectionObserver" in window) {
       io = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
             if (entry.isIntersecting) tryPlay();
-            else v.pause();
+            else if (pauseOffscreen) v.pause();
           }
         },
-        { threshold: 0.25 },
+        { threshold: 0.2 },
       );
       io.observe(v);
-    } else {
-      tryPlay();
     }
 
-    // Retry once the first frames are available (covers slow starts).
     v.addEventListener("loadeddata", tryPlay);
     prefersReduced.addEventListener("change", tryPlay);
     tryPlay();
@@ -64,7 +66,7 @@ export function AutoVideo({ src, poster, controls = false, className }: Props) {
       v.removeEventListener("loadeddata", tryPlay);
       prefersReduced.removeEventListener("change", tryPlay);
     };
-  }, []);
+  }, [pauseOffscreen]);
 
   return (
     <video

@@ -3,6 +3,7 @@ import type { Project } from "@/types/project";
 import { formatYear } from "@/lib/format";
 import { CoverImage } from "@/components/shared/CoverImage";
 import { AutoVideo } from "@/components/shared/AutoVideo";
+import { ProjectCardSlider } from "./ProjectCardSlider";
 
 interface Props {
   project: Project;
@@ -12,18 +13,84 @@ interface Props {
 
 const LOCAL_VIDEO_RE = /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i;
 
+/** Category, description, contribution note and tech list — shared by both card layouts. */
+function CardText({ project }: { project: Project }) {
+  return (
+    <>
+      <p className="mt-1 font-mono text-[0.7rem] uppercase tracking-wide text-ink-mute">
+        {project.category}
+      </p>
+      <p className="mt-2 max-w-[34rem] text-sm text-ink-mute">
+        {project.shortDescription}
+      </p>
+      {project.contributionNote && (
+        <p className="mt-2 text-xs italic text-ink-mute">{project.contributionNote}</p>
+      )}
+      {project.tech && project.tech.length > 0 && (
+        <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-1">
+          {project.tech.map((t) => (
+            <li
+              key={t}
+              className="font-mono text-[0.7rem] text-ink-mute before:mr-3 before:text-line-strong before:content-['·'] first:before:content-none"
+            >
+              {t}
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
+  );
+}
+
 export function ProjectCard({ project, featured = false }: Props) {
+  const href = `/projects/${project.slug}`;
+  const hasSlider = featured && (project.gallery?.length ?? 0) > 1;
+  const hasVideo =
+    featured && !!project.video && LOCAL_VIDEO_RE.test(project.video);
+
+  // Card with an interactive image slider: the media handles its own gestures,
+  // so only the title and the CTA link to the case study.
+  if (hasSlider) {
+    return (
+      <div className="border-b border-line py-6 first:pt-0 last:border-0">
+        <div className="mb-4">
+          <ProjectCardSlider images={project.gallery!} />
+        </div>
+        <div className="flex items-baseline justify-between gap-4">
+          <Link
+            href={href}
+            className="text-[1.02rem] font-semibold text-ink-dim transition-colors hover:text-ink"
+          >
+            {project.title}
+          </Link>
+          <span className="shrink-0 font-mono text-xs text-ink-mute">
+            {formatYear(project.date)}
+          </span>
+        </div>
+        <CardText project={project} />
+        <Link
+          href={href}
+          className="group/cta mt-3 inline-flex items-center gap-1 text-xs text-ink-mute transition-colors hover:text-ink"
+        >
+          Read case study
+          <span className="transition-transform group-hover/cta:translate-x-0.5">→</span>
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <Link
-      href={`/projects/${project.slug}`}
+      href={href}
       className="group block border-b border-line py-6 transition-colors first:pt-0 last:border-0 hover:border-line-strong"
     >
       {featured &&
-        (project.video && LOCAL_VIDEO_RE.test(project.video) ? (
+        (hasVideo ? (
           <div className="mb-4 aspect-[16/10] overflow-hidden rounded-lg border border-line bg-black">
             <AutoVideo
-              src={project.video}
+              src={project.video!}
               poster={project.videoPoster}
+              pauseOffscreen={false}
               className="pointer-events-none h-full w-full object-cover"
             />
           </div>
@@ -45,30 +112,7 @@ export function ProjectCard({ project, featured = false }: Props) {
         </span>
       </div>
 
-      <p className="mt-1 font-mono text-[0.7rem] uppercase tracking-wide text-ink-mute">
-        {project.category}
-      </p>
-
-      <p className="mt-2 max-w-[34rem] text-sm text-ink-mute">
-        {project.shortDescription}
-      </p>
-
-      {project.contributionNote && (
-        <p className="mt-2 text-xs italic text-ink-mute">{project.contributionNote}</p>
-      )}
-
-      {project.tech && project.tech.length > 0 && (
-        <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-1">
-          {project.tech.map((t) => (
-            <li
-              key={t}
-              className="font-mono text-[0.7rem] text-ink-mute before:mr-3 before:text-line-strong before:content-['·'] first:before:content-none"
-            >
-              {t}
-            </li>
-          ))}
-        </ul>
-      )}
+      <CardText project={project} />
 
       <span className="mt-3 inline-flex items-center gap-1 text-xs text-ink-mute transition-colors group-hover:text-ink">
         Read case study
