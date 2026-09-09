@@ -12,8 +12,10 @@ interface Props {
 }
 
 /**
- * Muted, looping, auto-playing video. Pauses when the viewer prefers
- * reduced motion. Browsers only allow autoplay while muted.
+ * Muted, looping, auto-playing video.
+ * - Forces the `muted` property (React doesn't reflect the attribute), which
+ *   browsers require for autoplay.
+ * - Plays only while on screen, and not at all under prefers-reduced-motion.
  */
 export function AutoVideo({ src, poster, controls = false, className }: Props) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -21,22 +23,47 @@ export function AutoVideo({ src, poster, controls = false, className }: Props) {
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
-    // React doesn't reliably reflect the `muted` attribute to the property,
-    // and muted is required for autoplay — so set it explicitly.
+
     v.muted = true;
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const apply = () => {
-      if (mq.matches) {
-        v.pause();
-      } else {
-        v.play().catch(() => {
-          /* autoplay may still be blocked; ignore */
-        });
-      }
+    v.defaultMuted = true;
+
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+
+    const tryPlay = () => {
+      if (prefersReduced.matches) return;
+      const p = v.play();
+      if (p && typeof p.catch === "function") p.catch(() => {});
     };
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
+
+    // Play/pause as the element scrolls in and out of view.
+    let io: IntersectionObserver | null = null;
+    if ("IntersectionObserver" in window) {
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) tryPlay();
+            else v.pause();
+          }
+        },
+        { threshold: 0.25 },
+      );
+      io.observe(v);
+    } else {
+      tryPlay();
+    }
+
+    // Retry once the first frames are available (covers slow starts).
+    v.addEventListener("loadeddata", tryPlay);
+    prefersReduced.addEventListener("change", tryPlay);
+    tryPlay();
+
+    return () => {
+      io?.disconnect();
+      v.removeEventListener("loadeddata", tryPlay);
+      prefersReduced.removeEventListener("change", tryPlay);
+    };
   }, []);
 
   return (
@@ -49,7 +76,7 @@ export function AutoVideo({ src, poster, controls = false, className }: Props) {
       loop
       playsInline
       controls={controls}
-      preload="metadata"
+      preload="auto"
       aria-hidden={controls ? undefined : true}
       tabIndex={controls ? undefined : -1}
       className={className}
