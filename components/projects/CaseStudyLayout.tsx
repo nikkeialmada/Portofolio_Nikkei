@@ -7,6 +7,7 @@ import Link from "next/link";
 import type { Project } from "@/types/project";
 import { formatDate } from "@/lib/format";
 import { CoverImage } from "@/components/shared/CoverImage";
+import { VideoEmbed } from "@/components/shared/VideoEmbed";
 import { RichText } from "@/components/shared/RichText";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { ProjectCard } from "./ProjectCard";
@@ -59,13 +60,22 @@ export function CaseStudyLayout({ project, related }: Props) {
         )}
       </header>
 
-      <CoverImage
-        src={project.coverImageUrl}
-        alt={`${project.title} — cover`}
-        ratio="aspect-[16/9]"
-        priority
-        className="mt-8"
-      />
+      {project.video ? (
+        <VideoEmbed
+          src={project.video}
+          poster={project.videoPoster}
+          caption={project.videoCaption}
+          className="mt-8"
+        />
+      ) : (
+        <CoverImage
+          src={project.coverImageUrl}
+          alt={`${project.title} — cover`}
+          ratio="aspect-[16/9]"
+          priority
+          className="mt-8"
+        />
+      )}
 
       {/* --- Plain-language summary (PRD §11) --- */}
       {cs?.summary && (

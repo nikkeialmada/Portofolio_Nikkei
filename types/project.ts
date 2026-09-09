@@ -41,6 +41,12 @@ export interface ProjectFrontmatter {
   shortDescription: string;
   contributionNote?: string;
   coverImageUrl?: string;
+  /** Video URL: a local file (/videos/x.mp4, .webm) or an embed URL (YouTube/Vimeo). */
+  video?: string;
+  /** Poster image shown before a local video plays. */
+  videoPoster?: string;
+  /** Short caption under the video. */
+  videoCaption?: string;
   isPublished: boolean;
   tech?: string[];
   links?: ExternalLink[];
