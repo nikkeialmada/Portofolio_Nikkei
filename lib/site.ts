@@ -26,6 +26,8 @@ export interface EducationItem {
 export interface CredentialItem {
   title: string;
   date: string;
+  /** Link to the certificate / verification page. */
+  url?: string;
 }
 
 const EMAIL = "nikkeialmada@gmail.com";
@@ -135,7 +137,11 @@ export const siteConfig = {
   ] as EducationItem[],
 
   certifications: [
-    { title: "100 Days of Code — Master Python by Building 100 Projects", date: "Sep 2026" },
+    {
+      title: "100 Days of Code — Master Python by Building 100 Projects",
+      date: "Sep 2026",
+      url: "https://www.udemy.com/certificate/UC-f054421e-16a7-423f-964d-7c8b7e6d0c2b/",
+    },
     { title: "Geotechnical Risk Management — Case Studies in Geotechnical Failure", date: "Aug 2026" },
     { title: "Coal Mine Planning: MineScape & Spry", date: "Jan 2025" },
   ] as CredentialItem[],

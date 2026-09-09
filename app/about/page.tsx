@@ -89,7 +89,18 @@ export default function AboutPage() {
                 key={i}
                 className="flex items-baseline justify-between gap-4 border-b border-line py-3 text-sm first:pt-0 last:border-0"
               >
-                <span className="text-ink-dim">{c.title}</span>
+                {c.url ? (
+                  <a
+                    href={c.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="border-b border-line-strong pb-px text-ink-dim transition-colors hover:border-ink hover:text-ink"
+                  >
+                    {c.title} ↗
+                  </a>
+                ) : (
+                  <span className="text-ink-dim">{c.title}</span>
+                )}
                 <span className="shrink-0 font-mono text-xs text-ink-mute">
                   {c.date}
                 </span>
