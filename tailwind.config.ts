@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss";
 
-/** Warna didefinisikan sebagai channel RGB di globals.css agar modifier
- *  opacity Tailwind (mis. `bg-bg/80`) tetap bekerja. */
+/** Colours live as RGB channels in globals.css so opacity modifiers keep working. */
 const withAlpha = (variable: string) => `rgb(var(${variable}) / <alpha-value>)`;
 
 export default {
@@ -15,6 +14,11 @@ export default {
       colors: {
         bg: withAlpha("--bg"),
         surface: withAlpha("--surface"),
+        band: withAlpha("--band"),
+        primary: {
+          DEFAULT: withAlpha("--primary"),
+          ink: withAlpha("--primary-ink"),
+        },
         line: {
           DEFAULT: withAlpha("--line"),
           strong: withAlpha("--line-strong"),
@@ -27,6 +31,10 @@ export default {
       },
       maxWidth: {
         content: "40rem",
+      },
+      boxShadow: {
+        card: "0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px rgb(15 23 42 / 0.06)",
+        "card-hover": "0 2px 4px rgb(15 23 42 / 0.06), 0 16px 40px rgb(15 23 42 / 0.12)",
       },
     },
   },

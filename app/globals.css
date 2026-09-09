@@ -2,27 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Warna sebagai channel RGB "r g b" — dipakai lewat rgb(var(--x) / <alpha>). */
+/* Light theme — palette matches the reference portfolio (Inter + violet + slate). */
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  --bg: 11 11 12;
-  --surface: 20 20 22;
-  --line: 38 38 42;
-  --line-strong: 58 58 64;
-  --text: 237 237 237;
-  --dim: 161 161 166;
-  --mute: 111 111 118;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --bg: 255 255 255;
+  --surface: 241 245 249; /* slate-100  */
+  --band: 30 41 59; /* slate-800  */
+  --line: 226 232 240; /* slate-200  */
+  --line-strong: 203 213 225; /* slate-300  */
+  --text: 15 23 42; /* slate-900  */
+  --dim: 51 65 85; /* slate-700  */
+  --mute: 100 116 139; /* slate-500  */
+  --primary: 109 40 217; /* violet-700 */
+  --primary-ink: 255 255 255;
 }
 
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    /* offset anchor scrolling for the fixed nav */
+    scroll-padding-top: 5rem;
   }
 
   body {
-    line-height: 1.65;
+    line-height: 1.7;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
   }
@@ -32,21 +39,35 @@
   }
 
   ::selection {
-    background: rgb(var(--line-strong));
-    color: #fff;
+    background: rgb(var(--primary) / 0.15);
   }
 
   :focus-visible {
-    outline: 2px solid rgb(var(--text));
+    outline: 2px solid rgb(var(--primary));
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: 4px;
   }
 }
 
 @layer components {
-  /* Kontainer horizontal standar. */
-  .wrap {
-    @apply mx-auto w-full max-w-content px-6;
+  /* Centered content container. */
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-6 lg:px-8;
+  }
+
+  /* Section vertical rhythm. */
+  .section {
+    @apply scroll-mt-24 py-20 lg:py-28;
+  }
+
+  /* Eyebrow / section label. */
+  .eyebrow {
+    @apply mb-3 text-base font-medium text-ink-mute lg:text-lg;
+  }
+
+  /* Section title. */
+  .section-title {
+    @apply text-3xl font-bold tracking-tight text-ink lg:text-4xl;
   }
 }
 

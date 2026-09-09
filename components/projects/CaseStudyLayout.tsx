@@ -1,7 +1,7 @@
 /* =============================================================
-   Case-study detail layout (Blueprint §3):
-   CaseStudyHero + Background & Objectives + Key Features & Core Logic
-   + Related Projects.
+   Case-study detail layout:
+   Hero + In brief + Background & Objectives + Key Features &
+   Core Logic + Screens + Related projects.
    ============================================================= */
 import Link from "next/link";
 import type { Project } from "@/types/project";
@@ -11,7 +11,7 @@ import { VideoEmbed } from "@/components/shared/VideoEmbed";
 import { RichText } from "@/components/shared/RichText";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { ScreenshotGallery } from "./ScreenshotGallery";
-import { ProjectCard } from "./ProjectCard";
+import { PortfolioCard } from "./PortfolioCard";
 
 interface Props {
   project: Project;
@@ -23,35 +23,34 @@ export function CaseStudyLayout({ project, related }: Props) {
 
   return (
     <article>
-      {/* --- Hero --- */}
       <header>
         <Link
-          href="/projects"
-          className="font-mono text-xs text-ink-mute transition-colors hover:text-ink"
+          href="/#portfolio"
+          className="text-sm font-medium text-ink-mute transition-colors hover:text-primary"
         >
-          ← All projects
+          ← Back to portfolio
         </Link>
 
-        <p className="mt-6 font-mono text-xs uppercase tracking-[0.14em] text-ink-mute">
+        <p className="mt-6 text-xs font-semibold uppercase tracking-wide text-primary">
           {project.category} · {formatDate(project.date)}
         </p>
-        <h1 className="mt-3 text-2xl font-semibold tracking-tight sm:text-[1.75rem]">
+        <h1 className="mt-3 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
           {project.title}
         </h1>
-        <p className="mt-3 max-w-[34rem] text-ink-dim">{project.shortDescription}</p>
+        <p className="mt-4 text-lg text-ink-dim">{project.shortDescription}</p>
         {project.contributionNote && (
           <p className="mt-2 text-sm italic text-ink-mute">{project.contributionNote}</p>
         )}
 
         {project.links && project.links.length > 0 && (
-          <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+          <ul className="mt-5 flex flex-wrap gap-3">
             {project.links.map((l) => (
               <li key={l.url}>
                 <a
                   href={l.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border-b border-line-strong pb-px text-sm text-ink-dim transition-colors hover:border-ink hover:text-ink"
+                  className="rounded-full border border-line-strong px-4 py-1.5 text-sm font-semibold text-ink-dim transition hover:border-primary hover:text-primary"
                 >
                   {l.label ?? l.type} ↗
                 </a>
@@ -79,17 +78,15 @@ export function CaseStudyLayout({ project, related }: Props) {
         />
       )}
 
-      {/* --- Plain-language summary (PRD §11) --- */}
       {cs?.summary && (
-        <section className="mt-12 rounded-lg border border-line bg-surface p-5">
-          <p className="mb-2 font-mono text-xs uppercase tracking-[0.14em] text-ink-mute">
+        <section className="mt-12 rounded-xl border border-line bg-surface p-6">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
             In brief
           </p>
           <p className="leading-relaxed text-ink-dim">{cs.summary}</p>
         </section>
       )}
 
-      {/* --- Background & Objectives --- */}
       {cs?.backgroundObjectives && (
         <section className="mt-14">
           <SectionHeading>Background &amp; Objectives</SectionHeading>
@@ -97,7 +94,6 @@ export function CaseStudyLayout({ project, related }: Props) {
         </section>
       )}
 
-      {/* --- Key Features & Core Logic --- */}
       {cs?.keyFeaturesCoreLogic && (
         <section className="mt-14">
           <SectionHeading>Key Features &amp; Core Logic</SectionHeading>
@@ -105,7 +101,6 @@ export function CaseStudyLayout({ project, related }: Props) {
         </section>
       )}
 
-      {/* --- Screens --- */}
       {project.gallery && project.gallery.length > 0 && (
         <section className="mt-14">
           <SectionHeading count={project.gallery.length}>Screens</SectionHeading>
@@ -113,7 +108,6 @@ export function CaseStudyLayout({ project, related }: Props) {
         </section>
       )}
 
-      {/* --- Extra notes (MDX body) --- */}
       {project.body && (
         <section className="mt-14">
           <SectionHeading>Notes</SectionHeading>
@@ -121,13 +115,12 @@ export function CaseStudyLayout({ project, related }: Props) {
         </section>
       )}
 
-      {/* --- Related Projects --- */}
       {related.length > 0 && (
-        <section className="mt-16 border-t border-line pt-10">
-          <SectionHeading>Related Projects</SectionHeading>
-          <div className="flex flex-col">
+        <section className="mt-16 border-t border-line pt-12">
+          <SectionHeading>Related projects</SectionHeading>
+          <div className="grid gap-6 sm:grid-cols-2">
             {related.map((p) => (
-              <ProjectCard key={p.slug} project={p} />
+              <PortfolioCard key={p.slug} project={p} />
             ))}
           </div>
         </section>

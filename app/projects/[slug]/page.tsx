@@ -7,7 +7,7 @@ import { buildMetadata } from "@/lib/generateMetadata";
 
 type Params = { params: Promise<{ slug: string }> };
 
-// Semua halaman studi kasus dibangun saat build (SSG).
+// Every case-study page is built at build time (SSG).
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -33,5 +33,9 @@ export default async function CaseStudyPage({ params }: Params) {
   if (!project) notFound();
 
   const related = getRelatedProjects(slug, 2);
-  return <CaseStudyLayout project={project} related={related} />;
+  return (
+    <div className="mx-auto w-full max-w-3xl px-6 pb-24 pt-28 lg:pt-32">
+      <CaseStudyLayout project={project} related={related} />
+    </div>
+  );
 }

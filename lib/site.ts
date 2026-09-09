@@ -14,6 +14,8 @@ export interface ExperienceItem {
   org: string;
   period: string;
   description: string;
+  /** Logo file in /public/images/logos/ (e.g. "/images/logos/akp.png"). Optional. */
+  logo?: string;
 }
 
 export interface EducationItem {
@@ -21,6 +23,7 @@ export interface EducationItem {
   detail: string;
   period: string;
   notes?: string[];
+  logo?: string;
 }
 
 export interface CredentialItem {
@@ -69,6 +72,13 @@ export const siteConfig = {
   /** Availability badge on the home hero (set to null to hide). */
   availability: "Open to mining-technology consulting & freelance" as string | null,
 
+  /** Hero. */
+  heroGreeting: "Hi, I'm",
+  heroTagline:
+    "I take mining projects from resource model to feasibility-level plan, and build the web and mobile tools that keep the numbers honest.",
+  /** Square-ish portrait in /public/images/. Falls back to initials if missing. */
+  heroPhoto: "/images/profile.jpg",
+
   /** "mailto:" link with a prefilled subject. */
   contactHref: `mailto:${EMAIL}?subject=${encodeURIComponent(EMAIL_SUBJECT)}`,
   contactLabel: "Get in touch",
@@ -98,6 +108,7 @@ export const siteConfig = {
       role: "Foreman Mining Engineer",
       org: "PT Adhi Kartiko Pratama",
       period: "Mar 2025 — Present",
+      logo: "/images/logos/adhi-kartiko-pratama.png",
       description:
         "Block-model validation, long-term pit design, pit optimisation, and scheduling for an acquisition-stage project, supporting management's technical due diligence. Designed pit, road, dump, and construction layouts with Surpac, Deswik, Datamine, AutoCAD, and 12D, and built a Flask/MySQL production-monitoring dashboard.",
     },
@@ -105,6 +116,7 @@ export const siteConfig = {
       role: "Deswik.CAD Trainer (Freelance)",
       org: "Aksara Karir — Mining & Geology Training",
       period: "Sep 2026 — Present",
+      logo: "/images/logos/aksara-karir.png",
       description:
         "Design and deliver a three-day intensive Deswik.CAD program for nickel mine planning: UI fundamentals, block-model workflows, pit and dump design, haul-road design, surface reconciliation, catchment analysis, and section/layout plotting.",
     },
@@ -119,6 +131,7 @@ export const siteConfig = {
       role: "Geotechnical Engineer",
       org: "PT LAPI ITB — Geotechnical Division",
       period: "Sep 2024 — May 2025",
+      logo: "/images/logos/lapi-itb.png",
       description:
         "Single-slope analysis and optimal slope geometry for Life-of-Mine designs in limestone, claystone, laterite, and silica at PT Indocement Tunggal Prakarsa (Tarjun). Delivered the geotechnical section of feasibility study reports: drilling-data interpretation, slope-stability analysis, and mining recommendations.",
     },
@@ -129,9 +142,20 @@ export const siteConfig = {
       school: "Institut Teknologi Bandung",
       detail: "B.Eng. Mining Engineering — GPA 3.11 / 4.00",
       period: "Aug 2020 — Aug 2024",
+      logo: "/images/logos/itb.png",
       notes: [
         "Laterite nickel mine feasibility study: optimal pit layouts, mine scheduling, hydrological and economic analysis.",
         "Underground gold mine feasibility study: sub-level stoping layout, mine schedule, and reclamation section.",
+      ],
+    },
+    {
+      school: "SMAN 4 Sukabumi",
+      detail: "Natural Science",
+      period: "Jul 2017 — Jul 2020",
+      logo: "/images/logos/sman4-sukabumi.png",
+      notes: [
+        "Top of a 230-student cohort in mathematics and natural science.",
+        "4th place, Physics Olympiad (OSN), Sukabumi.",
       ],
     },
   ] as EducationItem[],
@@ -178,10 +202,14 @@ export const siteConfig = {
     Languages: ["Bahasa Indonesia (native)", "English (B2)"],
   } as Record<string, string[]>,
 
+  /** Single-page anchor navigation. `id` matches the section id on the home page. */
   nav: [
-    { href: "/", label: "Home" },
-    { href: "/projects", label: "Projects" },
-    { href: "/about", label: "About" },
+    { href: "/#home", id: "home", label: "Home" },
+    { href: "/#about", id: "about", label: "About" },
+    { href: "/#portfolio", id: "portfolio", label: "Portfolio" },
+    { href: "/#education", id: "education", label: "Education" },
+    { href: "/#experience", id: "experience", label: "Experience" },
+    { href: "/#contact", id: "contact", label: "Contact" },
   ],
 };
 

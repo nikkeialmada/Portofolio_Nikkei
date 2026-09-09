@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
-import { Navbar } from "@/components/layout/Navbar";
+import { Inter } from "next/font/google";
+import { SiteNav } from "@/components/layout/SiteNav";
 import { Footer } from "@/components/layout/Footer";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
@@ -8,12 +8,6 @@ import "./globals.css";
 const sans = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
-  display: "swap",
-});
-
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
   display: "swap",
 });
 
@@ -47,10 +41,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
-      <body className="min-h-dvh bg-bg font-sans text-ink">
-        <Navbar />
-        <main className="wrap py-12">{children}</main>
+    <html lang="en" className={sans.variable}>
+      <body className="bg-bg font-sans text-ink antialiased">
+        <SiteNav />
+        <main>{children}</main>
         <Footer />
       </body>
     </html>
