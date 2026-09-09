@@ -124,6 +124,7 @@ export const siteConfig = {
       role: "Solo Developer — Mining Technology",
       org: "Independent",
       period: "Jul 2026 — Present",
+      logo: "/images/georival/logo.png",
       description:
         "Designed and led development of GEORIVAL, an Android app for exploration and mine-planning digitisation, plus an end-to-end geospatial pipeline for automated grade–tonnage reporting and large-scale point-cloud section profiles.",
     },
