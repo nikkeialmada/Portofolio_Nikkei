@@ -28,3 +28,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# Source docs kept local only (not for the public site)
+/public/images/FS_Nikel_2_A4_final.pdf
