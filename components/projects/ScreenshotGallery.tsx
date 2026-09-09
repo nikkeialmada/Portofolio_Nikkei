@@ -40,15 +40,15 @@ export function ScreenshotGallery({ images }: { images: GalleryImage[] }) {
               type="button"
               onClick={() => setOpen(i)}
               aria-label={`View screenshot: ${img.alt}`}
-              className="group block w-full overflow-hidden rounded-lg border border-line bg-black"
+              className="group block w-full overflow-hidden rounded-2xl border border-line bg-black"
             >
-              <span className="relative block aspect-[10/19]">
+              <span className="relative block aspect-[9/19]">
                 <Image
                   src={img.src}
                   alt={img.alt}
                   fill
                   sizes="(max-width: 640px) 45vw, 200px"
-                  className="object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                  className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                 />
               </span>
             </button>
