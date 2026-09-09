@@ -77,6 +77,9 @@ export function ProjectCardSlider({ images }: { images: GalleryImage[] }) {
 
   const slideBasis = 100 / perView;
   const canSlide = maxIndex > 0;
+  // Frame hugs the phone screenshots (~0.52 aspect each) so there are no
+  // wide letterbox bars — its shape follows how many are in view.
+  const frameAspect = perView * 0.52;
 
   return (
     <div
@@ -89,7 +92,8 @@ export function ProjectCardSlider({ images }: { images: GalleryImage[] }) {
       }}
     >
       <div
-        className="aspect-[16/10] overflow-hidden rounded-lg border border-line bg-black"
+        className="mx-auto overflow-hidden rounded-lg border border-line bg-surface"
+        style={{ aspectRatio: String(frameAspect) }}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
@@ -105,19 +109,17 @@ export function ProjectCardSlider({ images }: { images: GalleryImage[] }) {
           {images.map((img, i) => (
             <div
               key={img.src}
-              className="h-full shrink-0 px-1"
+              className="relative h-full shrink-0"
               style={{ flex: `0 0 ${slideBasis}%` }}
             >
-              <div className="relative h-full w-full">
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  sizes="(max-width: 460px) 88vw, (max-width: 768px) 44vw, 210px"
-                  className="object-contain"
-                  priority={i < 3}
-                />
-              </div>
+              <Image
+                src={img.src}
+                alt={img.alt}
+                fill
+                sizes="(max-width: 460px) 88vw, (max-width: 768px) 44vw, 210px"
+                className="object-contain"
+                priority={i < 3}
+              />
             </div>
           ))}
         </div>
