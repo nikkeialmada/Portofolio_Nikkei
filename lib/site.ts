@@ -167,7 +167,11 @@ export const siteConfig = {
       date: "Sep 2026",
       url: "https://www.udemy.com/certificate/UC-f054421e-16a7-423f-964d-7c8b7e6d0c2b/",
     },
-    { title: "Geotechnical Risk Management — Case Studies in Geotechnical Failure", date: "Aug 2026" },
+    {
+      title: "Geotechnical Risk Management — Case Studies in Geotechnical Failure",
+      date: "Aug 2026",
+      url: "/certificates/geotechnical-risk-management.pdf",
+    },
     { title: "Coal Mine Planning: MineScape & Spry", date: "Jan 2025" },
   ] as CredentialItem[],
 
