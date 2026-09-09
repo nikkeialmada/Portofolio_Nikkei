@@ -163,7 +163,7 @@ export const siteConfig = {
 
   certifications: [
     {
-      title: "100 Days of Code — Master Python by Building 100 Projects",
+      title: "100 Days of Code: The Complete Python Pro Bootcamp — 57 hrs (Udemy, Dr. Angela Yu)",
       date: "Sep 2026",
       url: "https://www.udemy.com/certificate/UC-f054421e-16a7-423f-964d-7c8b7e6d0c2b/",
     },
