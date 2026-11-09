@@ -121,6 +121,14 @@ export const siteConfig = {
         "Design and deliver a three-day intensive Deswik.CAD program for nickel mine planning: UI fundamentals, block-model workflows, pit and dump design, haul-road design, surface reconciliation, catchment analysis, and section/layout plotting.",
     },
     {
+      role: "Mine Planning Workshop Speaker (Freelance)",
+      org: "Algoritmine Indonesia",
+      period: "Nov 2026",
+      logo: "/images/logos/algoritmine.png",
+      description:
+        "Delivered a certified two-day workshop, supported by Bursa Tambang Indonesia, covering fundamental mine planning with Deswik and a second day on AI-powered mine planning — integrating Claude AI into a Deswik-based workflow.",
+    },
+    {
       role: "Solo Developer — Mining Technology",
       org: "Independent",
       period: "Jul 2026 — Present",
