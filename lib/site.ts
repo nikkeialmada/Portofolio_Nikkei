@@ -57,7 +57,7 @@ function resolveSiteUrl(): string {
 export const siteConfig = {
   name: "Muhammad Gymnastiar Nikkei Almada",
   shortName: "Nikkei Almada",
-  role: "Mining Engineer · Mine Planning & Geotechnics",
+  role: "Mineplan, Geotechnics, Hydrology and Codes",
   location: "Bandung, West Java, Indonesia",
   email: EMAIL,
   phoneDisplay: PHONE_DISPLAY,
