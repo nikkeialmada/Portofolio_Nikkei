@@ -93,11 +93,12 @@ export const siteConfig = {
   about: [
     "I'm Muhammad Gymnastiar Nikkei Almada, a mining engineer based in Bandung. My core work is pit, road, and dump design, mine scheduling, pit optimisation, and geotechnical slope assessment using Surpac, Deswik, Datamine, and the wider macro mine-planning suite.",
     "Alongside that, I develop web and mobile applications that support mining data analysis and operational decision-making — from a real-time equipment-KPI dashboard to GEORIVAL, an Android app that digitises exploration and mine planning for a nickel laterite operation.",
-    "I'm currently a Foreman Mining Engineer at PT Adhi Kartiko Pratama, a freelance Deswik.CAD trainer with Aksara Karir, and an independent developer on mining-technology projects.",
+    "I'm currently a Foreman Mineplan Engineer at PT Adhi Kartiko Pratama, a freelance Deswik.CAD and AI-powered mine planning trainer, and an independent developer on mining-technology projects.",
   ],
 
   socials: [
     { label: "LinkedIn", url: "https://www.linkedin.com/in/gymnastiarn/", external: true },
+    { label: "WhatsApp", url: `https://wa.me/${PHONE_TEL.replace(/^\+/, "")}`, external: true },
     { label: "GitHub", url: "https://github.com/nikkeialmada", external: true },
     { label: "Email", url: `mailto:${EMAIL}` },
     { label: "CV (PDF)", url: "/cv.pdf", external: true },
@@ -105,12 +106,20 @@ export const siteConfig = {
 
   experience: [
     {
-      role: "Foreman Mining Engineer",
-      org: "PT Adhi Kartiko Pratama",
+      role: "Foreman Mineplan Engineer",
+      org: "PT Adhi Kartiko Pratama Tbk (Subsidiary of LX International Indonesia)",
       period: "Mar 2025 — Present",
       logo: "/images/logos/adhi-kartiko-pratama.png",
       description:
         "Block-model validation, long-term pit design, pit optimisation, and scheduling for an acquisition-stage project, supporting management's technical due diligence. Designed pit, road, dump, and construction layouts with Surpac, Deswik, Datamine, AutoCAD, and 12D, and built a Flask/MySQL production-monitoring dashboard.",
+    },
+    {
+      role: "Deswik.CAD & AI-Powered Mine Planning (Freelance)",
+      org: "Algoritmine Indonesia — Mining & Geology Training",
+      period: "Oct 2026 — Present",
+      logo: "/images/logos/algoritmine.png",
+      description:
+        "Deliver training on mine planning fundamentals and Deswik workflows — pit, bench, and haul-road design, production sequencing, and mine scheduling — alongside sessions on AI in mine planning: technical problem-solving, mining-data analysis, Claude AI integration with Deswik, and Python programming to connect Deswik with AI tools.",
     },
     {
       role: "Deswik.CAD Trainer (Freelance)",
@@ -119,14 +128,6 @@ export const siteConfig = {
       logo: "/images/logos/aksara-karir.png",
       description:
         "Design and deliver a three-day intensive Deswik.CAD program for nickel mine planning: UI fundamentals, block-model workflows, pit and dump design, haul-road design, surface reconciliation, catchment analysis, and section/layout plotting.",
-    },
-    {
-      role: "Mine Planning Workshop Speaker (Freelance)",
-      org: "Algoritmine Indonesia",
-      period: "Nov 2026",
-      logo: "/images/logos/algoritmine.png",
-      description:
-        "Delivered a certified two-day workshop, supported by Bursa Tambang Indonesia, covering fundamental mine planning with Deswik and a second day on AI-powered mine planning — integrating Claude AI into a Deswik-based workflow.",
     },
     {
       role: "Solo Developer — Mining Technology",
@@ -179,6 +180,10 @@ export const siteConfig = {
       title: "Geotechnical Risk Management — Case Studies in Geotechnical Failure",
       date: "Aug 2026",
       url: "/certificates/geotechnical-risk-management.pdf",
+    },
+    {
+      title: "Pengawas Operasional Pertama (POP) — First-Line Supervisor Certification",
+      date: "Jul 2026",
     },
     { title: "Coal Mine Planning: MineScape & Spry", date: "Jan 2025" },
   ] as CredentialItem[],
