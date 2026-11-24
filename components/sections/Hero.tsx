@@ -1,11 +1,16 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/site";
 import { Avatar } from "@/components/shared/Avatar";
+import { RingParticlesBackground } from "@/components/shared/RingParticlesBackground";
 
 export function Hero() {
   return (
-    <section id="home" className="scroll-mt-24 pb-16 pt-28 lg:pb-24 lg:pt-40">
-      <div className="container-x grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+    <section
+      id="home"
+      className="relative scroll-mt-24 overflow-hidden pb-16 pt-28 lg:pb-24 lg:pt-40"
+    >
+      <RingParticlesBackground />
+      <div className="container-x relative z-10 grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
           {siteConfig.availability && (
             <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-ink-dim">
