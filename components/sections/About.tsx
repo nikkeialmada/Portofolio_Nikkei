@@ -1,25 +1,21 @@
 import { SectionHeader } from "@/components/shared/SectionHeader";
-import { RingParticlesBackground } from "@/components/shared/RingParticlesBackground";
+import { InteractiveParticleField } from "@/components/shared/InteractiveParticleField";
 import { siteConfig } from "@/lib/site";
 
 export function About() {
   return (
-    <section id="about" className="section">
-      <div className="container-x">
-        <div className="relative overflow-hidden rounded-2xl">
-          <RingParticlesBackground />
-          <div className="relative z-10 p-1">
-            <SectionHeader
-              eyebrow="About me"
-              title="A mining engineer who also ships software"
-            />
+    <section id="about" className="section relative overflow-hidden">
+      <InteractiveParticleField />
+      <div className="container-x relative z-10">
+        <SectionHeader
+          eyebrow="About me"
+          title="A mining engineer who also ships software"
+        />
 
-            <div className="mt-8 max-w-3xl space-y-4 text-ink-dim">
-              {siteConfig.about.map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
-            </div>
-          </div>
+        <div className="mt-8 max-w-3xl space-y-4 text-ink-dim">
+          {siteConfig.about.map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
         </div>
 
         <h3 className="mt-14 text-xl font-semibold text-ink">
