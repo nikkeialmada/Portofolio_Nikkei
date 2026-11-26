@@ -44,7 +44,6 @@ export function RingParticlesBackground({ className = "" }: Props) {
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      if (prefersReduced.matches) drawFrame(0);
     };
 
     let targetX = 0;
@@ -77,15 +76,17 @@ export function RingParticlesBackground({ className = "" }: Props) {
     cx = targetX = width / 2;
     cy = targetY = height / 2;
 
-    const numRows = 10;
-    const numParticles = 26;
-    const particleSize = 1.6;
+    const numRows = 12;
+    const numParticles = 30;
+    const particleSize = 2.6;
 
     function drawFrame(t: number) {
       ctx!.clearRect(0, 0, width, height);
+      ctx!.shadowColor = `rgba(${PRIMARY_RGB}, 0.9)`;
+      ctx!.shadowBlur = 8;
 
-      const innerRadius = Math.min(width, height) * 0.16;
-      const thickness = Math.min(width, height) * 0.22;
+      const innerRadius = Math.min(width, height) * 0.2;
+      const thickness = Math.min(width, height) * 0.32;
       const outerRadius = innerRadius + thickness;
       const halfThick = thickness / 2;
 
@@ -101,7 +102,7 @@ export function RingParticlesBackground({ className = "" }: Props) {
           const waveHeight = w1 + w2 + rowOffset;
 
           const normalized = Math.pow(Math.max(0, (waveHeight + 3) / 6), 1.5);
-          const finalRadius = baseRadius + waveHeight * 10;
+          const finalRadius = baseRadius + waveHeight * 12;
 
           const x = cx + Math.cos(angle) * finalRadius;
           const y = cy + Math.sin(angle) * finalRadius;
@@ -113,8 +114,8 @@ export function RingParticlesBackground({ className = "" }: Props) {
             Math.min(1, Math.min(distFromInner, distFromOuter) / halfThick),
           );
 
-          const alpha = 0.06 + normalized * 0.38 * visibility;
-          if (alpha < 0.015) continue;
+          const alpha = 0.18 + normalized * 0.62 * visibility;
+          if (alpha < 0.03) continue;
 
           ctx!.beginPath();
           ctx!.fillStyle = `rgba(${PRIMARY_RGB}, ${alpha.toFixed(3)})`;
@@ -127,34 +128,23 @@ export function RingParticlesBackground({ className = "" }: Props) {
     let raf = 0;
     const start = performance.now();
 
+    // The pointer-follow always runs — it's direct interaction, not an
+    // autoplaying animation. Only the idle ripple (time-based wave motion)
+    // is skipped under prefers-reduced-motion.
     const tick = (now: number) => {
-      if (prefersReduced.matches) return; // stay on the single static frame
-      if (visible && !document.hidden) {
-        cx += (targetX - cx) * 0.05;
-        cy += (targetY - cy) * 0.05;
-        drawFrame(((now - start) / 1000) * 0.6);
-      }
       raf = requestAnimationFrame(tick);
-    };
+      if (!visible || document.hidden) return;
 
-    const onMotionChange = () => {
-      cancelAnimationFrame(raf);
-      if (prefersReduced.matches) {
-        drawFrame(0);
-      } else {
-        raf = requestAnimationFrame(tick);
-      }
+      const reduced = prefersReduced.matches;
+      const ease = reduced ? 1 : 0.08;
+      cx += (targetX - cx) * ease;
+      cy += (targetY - cy) * ease;
+      drawFrame(reduced ? 0 : ((now - start) / 1000) * 0.6);
     };
 
     parent.addEventListener("pointermove", onPointerMove);
     parent.addEventListener("pointerleave", onPointerLeave);
-    prefersReduced.addEventListener("change", onMotionChange);
-
-    if (prefersReduced.matches) {
-      drawFrame(0);
-    } else {
-      raf = requestAnimationFrame(tick);
-    }
+    raf = requestAnimationFrame(tick);
 
     return () => {
       cancelAnimationFrame(raf);
@@ -162,7 +152,6 @@ export function RingParticlesBackground({ className = "" }: Props) {
       ro.disconnect();
       parent.removeEventListener("pointermove", onPointerMove);
       parent.removeEventListener("pointerleave", onPointerLeave);
-      prefersReduced.removeEventListener("change", onMotionChange);
     };
   }, []);
 
