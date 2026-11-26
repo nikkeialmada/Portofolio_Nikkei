@@ -9,6 +9,36 @@ interface Props {
 /** Violet accent, matches --primary in globals.css. */
 const PRIMARY_RGB = "109, 40, 217";
 
+function mulberry32(seed: number) {
+  let a = seed;
+  return function () {
+    a |= 0;
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** Pre-render one soft radial-gradient dot so per-particle draws are a cheap
+ *  drawImage() instead of an expensive per-call shadowBlur. */
+function makeGlowSprite() {
+  const size = 48;
+  const c = document.createElement("canvas");
+  c.width = c.height = size;
+  const g = c.getContext("2d")!;
+  const grad = g.createRadialGradient(
+    size / 2, size / 2, 0,
+    size / 2, size / 2, size / 2,
+  );
+  grad.addColorStop(0, `rgba(${PRIMARY_RGB}, 1)`);
+  grad.addColorStop(0.35, `rgba(${PRIMARY_RGB}, 0.55)`);
+  grad.addColorStop(1, `rgba(${PRIMARY_RGB}, 0)`);
+  g.fillStyle = grad;
+  g.fillRect(0, 0, size, size);
+  return c;
+}
+
 /**
  * Decorative ring-of-particles background, inspired by the Houdini
  * PaintWorklet effect on Google's Antigravity site (bram.us/2025/12/02/
@@ -17,9 +47,10 @@ const PRIMARY_RGB = "109, 40, 217";
  * Safari support without a polyfill).
  *
  * Layered sine waves distort a ring of particles into a slow, organic
- * ripple; the ring's centre eases toward the pointer. Fully decorative:
- * aria-hidden, pointer-events-none, pauses off-screen, hidden tabs, and
- * under prefers-reduced-motion.
+ * ripple; the ring's centre eases toward the pointer at a frame-rate
+ * independent speed. Fully decorative: aria-hidden, pointer-events-none,
+ * pauses off-screen / hidden tab, and freezes the idle ripple (but keeps
+ * pointer-follow) under prefers-reduced-motion.
  */
 export function RingParticlesBackground({ className = "" }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -31,6 +62,7 @@ export function RingParticlesBackground({ className = "" }: Props) {
     if (!canvas || !parent || !ctx) return;
 
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const glow = makeGlowSprite();
 
     let width = 0;
     let height = 0;
@@ -76,17 +108,24 @@ export function RingParticlesBackground({ className = "" }: Props) {
     cx = targetX = width / 2;
     cy = targetY = height / 2;
 
-    const numRows = 12;
-    const numParticles = 30;
-    const particleSize = 2.6;
+    // Seeded per-particle variation (computed once) so the field looks
+    // organic rather than perfectly symmetric, without re-randomising —
+    // and therefore flickering — every frame.
+    const numRows = 14;
+    const numParticles = 34;
+    const rand = mulberry32(1337);
+    const jitter: { size: number; phase: number }[] = [];
+    for (let r = 0; r < numRows; r++) {
+      for (let i = 0; i < numParticles; i++) {
+        jitter.push({ size: 2 + rand() * 2.6, phase: rand() * Math.PI * 2 });
+      }
+    }
 
     function drawFrame(t: number) {
       ctx!.clearRect(0, 0, width, height);
-      ctx!.shadowColor = `rgba(${PRIMARY_RGB}, 0.9)`;
-      ctx!.shadowBlur = 8;
 
       const innerRadius = Math.min(width, height) * 0.2;
-      const thickness = Math.min(width, height) * 0.32;
+      const thickness = Math.min(width, height) * 0.34;
       const outerRadius = innerRadius + thickness;
       const halfThick = thickness / 2;
 
@@ -95,9 +134,11 @@ export function RingParticlesBackground({ className = "" }: Props) {
         const baseRadius = innerRadius + rowProgress * thickness;
 
         for (let i = 0; i < numParticles; i++) {
-          const angle = (i / numParticles) * Math.PI * 2;
+          const j = jitter[r * numParticles + i];
+          const angle = (i / numParticles) * Math.PI * 2 + j.phase * 0.05;
+
           const w1 = Math.sin(angle * 4 + t);
-          const w2 = Math.sin(angle * 6 - t * 0.8);
+          const w2 = Math.sin(angle * 6 - t * 0.8 + j.phase);
           const rowOffset = Math.sin(r * 0.5 + t);
           const waveHeight = w1 + w2 + rowOffset;
 
@@ -114,32 +155,39 @@ export function RingParticlesBackground({ className = "" }: Props) {
             Math.min(1, Math.min(distFromInner, distFromOuter) / halfThick),
           );
 
-          const alpha = 0.18 + normalized * 0.62 * visibility;
+          const alpha = 0.12 + normalized * 0.75 * visibility;
           if (alpha < 0.03) continue;
 
-          ctx!.beginPath();
-          ctx!.fillStyle = `rgba(${PRIMARY_RGB}, ${alpha.toFixed(3)})`;
-          ctx!.arc(x, y, particleSize, 0, Math.PI * 2);
-          ctx!.fill();
+          const d = j.size * 3; // sprite draw size (bigger than the core dot)
+          ctx!.globalAlpha = Math.min(1, alpha);
+          ctx!.drawImage(glow, x - d / 2, y - d / 2, d, d);
         }
       }
+      ctx!.globalAlpha = 1;
     }
 
     let raf = 0;
     const start = performance.now();
+    let lastTime = start;
 
-    // The pointer-follow always runs — it's direct interaction, not an
-    // autoplaying animation. Only the idle ripple (time-based wave motion)
-    // is skipped under prefers-reduced-motion.
     const tick = (now: number) => {
       raf = requestAnimationFrame(tick);
+      const dt = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
       if (!visible || document.hidden) return;
 
       const reduced = prefersReduced.matches;
-      const ease = reduced ? 1 : 0.08;
-      cx += (targetX - cx) * ease;
-      cy += (targetY - cy) * ease;
-      drawFrame(reduced ? 0 : ((now - start) / 1000) * 0.6);
+      if (reduced) {
+        cx = targetX;
+        cy = targetY;
+      } else {
+        // Frame-rate independent exponential smoothing (same feel at 30fps,
+        // 60fps, or 144Hz — unlike a fixed per-frame lerp factor).
+        const ease = 1 - Math.exp(-8 * dt);
+        cx += (targetX - cx) * ease;
+        cy += (targetY - cy) * ease;
+      }
+      drawFrame(reduced ? 0 : (now - start) / 1000 * 0.6);
     };
 
     parent.addEventListener("pointermove", onPointerMove);
