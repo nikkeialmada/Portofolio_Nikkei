@@ -83,7 +83,10 @@ export function InteractiveParticleField({ className = "" }: Props) {
     const ctx = canvas?.getContext("2d");
     if (!canvas || !parent || !ctx) return;
 
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    // Deliberately not gated on prefers-reduced-motion: the idle drift is a
+    // small, constant-speed ambient motion (like the reference Antigravity
+    // hero, which animates unconditionally too) rather than a large or
+    // sudden transition, so it always plays.
     const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
 
     let width = 0;
@@ -163,7 +166,6 @@ export function InteractiveParticleField({ className = "" }: Props) {
       ctx.lineCap = "round";
       ctx.lineWidth = CONFIG.lineWidth;
 
-      const animateIdle = !prefersReduced.matches;
       const t = now * CONFIG.idleSpeed;
 
       for (let i = 0; i < particles.length; i++) {
@@ -202,12 +204,8 @@ export function InteractiveParticleField({ className = "" }: Props) {
 
         p.curAngle = easeAngleTowards(targetAngle, p.curAngle, CONFIG.angleEase);
 
-        let idleX = 0;
-        let idleY = 0;
-        if (animateIdle) {
-          idleX = Math.sin(t * p.idleSpeedMul + p.idlePhaseX) * CONFIG.idleAmplitude;
-          idleY = Math.cos(t * p.idleSpeedMul + p.idlePhaseY) * CONFIG.idleAmplitude;
-        }
+        const idleX = Math.sin(t * p.idleSpeedMul + p.idlePhaseX) * CONFIG.idleAmplitude;
+        const idleY = Math.cos(t * p.idleSpeedMul + p.idlePhaseY) * CONFIG.idleAmplitude;
 
         const x = p.ox + idleX + p.pushX;
         const y = p.oy + idleY + p.pushY;
